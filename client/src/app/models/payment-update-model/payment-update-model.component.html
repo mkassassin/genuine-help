@@ -1,0 +1,59 @@
+<section>
+   <div class="limiter" style="display: block;">
+       <div class="custom-modal modal-container">
+           <form class="form-horizontal" [formGroup]="proofForm" autocomplete="off">
+               <div class="modal-close-btn" (click)="modalReference.hide()">
+                   <div class="close-icon">
+                     <span class="material-icons"> clear </span>
+                   </div>
+               </div>
+               <div class="content-area">
+                   <h1> Payment Completion </h1>
+                   <div class="modal-content-body">
+                       <div class="content">                           
+                           <div class="row">
+                               <div class="col-sm-12 common-keyValue">
+                                 <div class="key-value">
+                                    <p class="key"> Amount: </p>
+                                    <p class="value"> Rs.50 </p>
+                                 </div>
+                               </div>
+                               <div class="col-md-12 col-sm-12">
+                                 <mat-form-field appearance="outline">
+                                    <mat-label> Remarks </mat-label>
+                                    <textarea matInput formControlName="remarks" placeholder="Remarks"></textarea>
+                                 </mat-form-field>
+                              </div>
+                              <div class="col-md-12 col-sm-12">
+                                 <span class="UploadBtn" [ngClass]="{'Uploaded': proofPreviewAvailable}" (click)="fileInput.click()">
+                                    <i class="material-icons"> cloud_upload </i>
+                                    <span *ngIf="proofPreviewAvailable"> Change Selected Proof  </span>
+                                    <span *ngIf="!proofPreviewAvailable"> Upload Proof *</span>
+                                 </span>
+                                 <span *ngIf="proofPreviewAvailable" class="UploadViewBtn" (click)="OpenUploadModel(UploadTemplate)"> View Selected Proof </span>
+                              </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </form>
+           <div class="modal-footer">
+               <button type="button" (click)="submit()" mat-raised-button color="primary" [disabled]="proofForm.status !== 'VALID' || uploading" [ngClass]="{'disabled': proofForm.status !== 'VALID' || uploading }">
+                  <ng-container *ngIf="uploading"> Uploading... </ng-container>
+                  <ng-container *ngIf="!uploading"> Submit Payment Proof </ng-container>
+               </button>
+           </div>
+       </div>
+   </div>
+</section>
+
+<ng-template #UploadTemplate>
+   <div class="proofView">
+      <span class="CloseBtn" (click)="bsModalRefOne.hide()"> x </span>
+      <div class="ImgSection">
+         <img [ngStyle]="{'max-height': screenHeight + 'px', 'max-width': screenWidth + 'px' }" src="{{proofPreview}}" alt="">
+      </div>
+   </div>
+</ng-template>
+
+<input #fileInput type='file' (change)="onFileChange($event)" style="display:none;" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif">

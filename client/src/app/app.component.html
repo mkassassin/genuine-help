@@ -1,0 +1,61 @@
+<div class="main-section">
+   <div  *ngIf="UserLoggedIn" class="top-menus">
+      <div class="logo">
+         <img src="./../assets/img/logo-vertical.png" alt="Logo">
+      </div>
+      <div class="responsive-logo">
+         <img src="./../assets/img/logo-icon.png" alt="Logo">
+      </div>
+      <div class="right-info">
+         <span (click)="responsiveMenu = !responsiveMenu" class="menu-icon">
+            <mat-icon *ngIf="!responsiveMenu">menu</mat-icon>
+            <mat-icon *ngIf="responsiveMenu">menu_open</mat-icon>
+         </span>
+         <span class="notify-icon">
+            <mat-icon>notifications_active</mat-icon>
+         </span>
+         <span class="user-details" [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
+            <span class="user-name" *ngIf="CustomerInfo !== null"> 
+               {{CustomerInfo.name}}
+            </span>
+         </span>
+         <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item [routerLink]="['/dashboard']"> <mat-icon>account_box</mat-icon> Profile</button>
+            <button mat-menu-item (click)="logOut()"> <mat-icon>exit_to_app</mat-icon> LogOut</button>
+         </mat-menu>
+      </div>
+   </div>
+   <div [ngClass]="{'content-section': UserLoggedIn}">
+      <div *ngIf="UserLoggedIn" class="left-section" [ngClass]="{'show': responsiveMenu}">
+         <div class="menus">
+            <ul>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/dashboard']"> <mat-icon>dashboard</mat-icon> Dashboard </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>account_box</mat-icon> Profile </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>source</mat-icon> E-Pin </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>apps</mat-icon> Rebirth Ids </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>groups</mat-icon> Total Team </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>stairs</mat-icon> Plan details </a>
+               </li>
+               <li routerLinkActive="link-active">
+                  <a [routerLink]="['/profile']"> <mat-icon>contact_mail</mat-icon> Contact us </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+      <div [ngClass]="{'right-section': UserLoggedIn}" [ngStyle]="{'opacity': !responsiveMenu ? 1 : 0.5 }">
+         <router-outlet></router-outlet>
+      </div>
+   </div>
+</div>

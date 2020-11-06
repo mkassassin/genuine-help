@@ -1,0 +1,100 @@
+<section class="dashboard-section">
+   <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card" [ngClass]="{'soon': provideHelp.Status === 'Locked'}">
+            <div class="card-title">
+               <h2> Provide Help </h2>
+               <ng-container *ngIf="provideHelp?.Status === 'Active'">
+                  <div class="key-value">
+                     <p class="key"> Status : </p>
+                     <p class="value"> {{provideHelp?.Status}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Available Amount :</p>
+                     <p class="value"> Rs. {{provideHelp?.AvailableAmount}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Process Status : </p>
+                     <p class="value"> {{provideHelp?.ProcessStatus}} </p>
+                  </div>
+                  <div class="box-action-bar">
+                     <button mat-raised-button [routerLink]="['/provide-help']">Proceed</button>
+                  </div>
+               </ng-container>
+               <ng-container *ngIf="provideHelp?.Status === 'Locked'">
+                  <p> Access Eligible on <span> {{provideHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+               </ng-container>
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card" [ngClass]="{'soon': getHelp.Status === 'Locked'}">
+            <div class="card-title">
+               <h2> Get Help </h2>
+               <ng-container *ngIf="getHelp?.Status === 'Active'">
+                  <div class="key-value">
+                     <p class="key"> Status : </p>
+                     <p class="value"> {{getHelp?.Status}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Available Amount :</p>
+                     <p class="value"> Rs. {{getHelp?.AvailableAmount}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Process Status : </p>
+                     <p class="value"> {{getHelp?.ProcessStatus}} </p>
+                  </div>
+                  <div class="box-action-bar">
+                     <button mat-raised-button [routerLink]="['/get-help']">Proceed</button>
+                  </div>
+               </ng-container>
+               <ng-container *ngIf="getHelp?.Status === 'Locked'">
+                  <p> Access Eligible on <span> {{getHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+               </ng-container>
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card">
+            <div class="card-title">
+               <h2> Referrals </h2>
+               <div class="key-value">
+                  <p class="key"> No.Of Active Referrals :  </p>
+                  <p class="value"> {{referrals?.activeReferrals}}  </p>
+               </div>
+               <div class="key-value">
+                  <p class="key"> No.Of Rejected Referrals : </p>
+                  <p class="value"> {{referrals?.rejectedReferrals}} </p>
+               </div>
+               <div class="box-action-bar">
+                  <button mat-raised-button (click)="copyLink()"> Copy Referral Link </button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card soon">
+            <div class="card-title">
+               <h2> Rebirth Ids </h2>
+               <p> Access Eligible on <span> {{after144Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card soon">
+            <div class="card-title">
+               <h2> Growth Wallet </h2>
+               <p> Access Eligible on <span> {{after72Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+         <div class="card soon">
+            <div class="card-title">
+               <h2> Total Withdrawals </h2>
+               <p> Access Eligible on <span> {{after72Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>

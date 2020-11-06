@@ -1,0 +1,162 @@
+.main-section {
+   margin: 0;
+   padding: 0;
+}
+.top-menus{
+   display: flex;
+   background: #ffffff;
+   justify-content: space-between;
+   padding: 0px 10px;
+   align-items: center;
+}
+.top-menus .logo img{
+   height: 70px;
+}
+.top-menus .responsive-logo{
+   display: none;
+}
+.top-menus .responsive-logo img{
+   height: 70px;
+}
+.top-menus .right-info {
+  display: flex;
+}
+.right-info .menu-icon {
+   display: none;
+   margin: 0px 15px;
+   color: #186729;
+   cursor: pointer;
+   opacity: 0.6;
+}
+.right-info .menu-icon:hover{
+   opacity: 1;
+}
+.right-info .notify-icon {
+   display: block;
+   margin: 0px 15px;
+   color: #186729;
+   cursor: pointer;
+   opacity: 0.6;
+}
+.right-info .notify-icon:hover{
+   opacity: 1;
+}
+.right-info .user-details {
+   margin: 0px 15px;
+   color: #186729;
+   display: flex;
+   cursor: pointer;
+   opacity: 0.6;
+}
+.right-info .user-details:hover{
+   opacity: 1;
+}
+.right-info .user-details span{
+   line-height: 25px;
+   padding: 0px 5px;
+}
+.content-section {
+   display: flex;
+   width: 100%;
+}
+.left-section {
+   margin: 20px 10px;
+   width: 250px;
+   border-radius: 10px;
+}
+.left-section ul{
+   margin: 0;
+   padding: 0;
+   list-style-type: none;
+}
+.left-section ul li{
+   margin: 15px 5px;
+   padding-left: 15px;
+   height: 40px;
+   line-height: 40px;
+   cursor: pointer;
+}
+.left-section ul li a{
+   line-height: 40px;
+   font-size: 14px;
+   color: #fff;
+   letter-spacing: 0.5px;
+   text-transform: capitalize;
+   font-weight: 200;
+   text-decoration: none;
+   display: grid;
+   grid-template-columns: 30px auto;
+}
+.left-section ul li a .mat-icon {
+   line-height: 40px;
+}
+.left-section ul li:hover{
+   background: #186729;
+   border-radius: 5px;
+   box-shadow: 2px 2px 4px rgb(0 0 0 / 62%);
+}
+.left-section ul li:hover{
+   background: #186729;
+   border-radius: 5px;
+   box-shadow: 2px 2px 4px rgb(0 0 0 / 62%);
+}
+.left-section ul li:hover a{
+   font-weight: 400;
+   font-size: 15px;
+}
+.left-section ul li.link-active{
+   background: #FFFFFF;
+   border-radius: 5px;
+   box-shadow: 2px 2px 4px rgb(0 0 0 / 62%);
+}
+.left-section ul li.link-active a{
+   color: #186729;
+   font-weight: 500;
+   font-size: 16px;
+}
+.right-section{
+   margin: 20px 10px;
+   background: #ffffff;
+   width: 100%;
+   box-shadow: 2px 2px 14px rgb(33 37 41 / 67%);
+   border-radius: 10px;
+   padding: 20px;
+}
+
+
+
+
+
+.left-section.fixed{
+   position: fixed;
+   z-index: 1;
+   margin: 10px;
+   box-shadow: 2px 2px 10px black;
+   height: calc(100% - 90px);
+   background: #1f8336;
+   background-image: linear-gradient(to left top, #000000e6, #1f8336);
+}
+@media (max-width: 768px) {
+   .left-section{
+      display: none;
+      position: absolute;
+      z-index: 1;
+      margin: 10px;
+      box-shadow: 2px 2px 10px black;
+      height: calc(100% - 90px);
+      background: #1f8336;
+      background-image: linear-gradient(to left top, #000000e6, #1f8336);
+   }
+   .left-section.show{
+      display: block;
+   }
+   .top-menus .logo{
+     display: none;
+   }
+   .right-info .menu-icon {
+      display: block;
+   }
+   .top-menus .responsive-logo{
+      display: block;
+    }
+}

@@ -1,0 +1,70 @@
+
+.getHelp-Section .requestDetails{
+   width: 100%;
+   box-shadow: 1px 1px 10px #c5c5c5;
+   margin-bottom: 20px;
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+}
+
+.getHelp-Section .requestDetails .requestContent{
+   padding: 10px;
+}
+.getHelp-Section .requestDetails .key-value {
+   display: grid;
+   grid-template-columns: auto auto;
+   justify-content: flex-start;
+   grid-gap: 10px;
+}
+.getHelp-Section .requestDetails .key-value.extraBold .key,
+.getHelp-Section .requestDetails .key-value.extraBold .value{
+   font-weight: 800;
+   font-size: 16px;
+}
+.getHelp-Section .requestDetails .key-value .key{
+   font-weight: 500;
+   color: #6c757d;
+}
+.getHelp-Section .requestDetails .key-value .value{
+   font-weight: 500;
+   color: seagreen;
+}
+.getHelp-Section .requestDetails .requestAction {
+   justify-content: flex-end;
+   display: flex;
+}
+
+.getHelp-Section .getHelp-action{
+   justify-content: flex-end;
+   display: flex;
+}
+
+
+.proofView {
+   position: fixed;
+   left: 50%;
+   top: calc(50% + 25px);
+   transform: translate(-50%,-50%);
+   z-index: 10000;
+   max-height: calc(100% - 85px);
+   max-width: 100%;
+}
+.proofView .CloseBtn {
+   position: absolute;
+   background: #a9a9a9;
+   width: 30px;
+   height: 30px;
+   display: block;
+   color: #fff;
+   cursor: pointer;
+   font-size: 25px;
+   line-height: 25px;
+   text-align: center;
+   border-radius: 50px;
+   top: -15px;
+   right: -15px;
+}
+.proofView .ImgSection {
+   border: 2px solid #c8c8c8;
+}

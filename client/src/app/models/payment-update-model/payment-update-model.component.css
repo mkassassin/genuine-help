@@ -1,0 +1,56 @@
+.UploadSection {
+   display: grid;
+   justify-content: flex-start;
+   grid-template-columns: auto auto;
+   align-items: center;
+   padding: 10px 0;
+}
+.UploadBtn {
+   cursor: pointer;
+   display: grid;
+   grid-template-columns: 25px auto;
+   align-items: center;
+   max-width: 190px;
+   padding: 5px 10px;
+   background: linear-gradient(to right,#949494 0,#dfdfdf 100%);
+   color: #fff;
+   border-radius: 5px;
+}
+.UploadBtn.Uploaded {
+   background: linear-gradient(to left top, #000000e6, #1f8336);
+}
+.UploadViewBtn {
+   cursor: pointer;
+   margin-left: 10px;
+   font-weight: 500;
+   margin-top: 10px;
+   color: #19662b;
+   display: block;
+}
+.proofView {
+   position: fixed;
+   left: 50%;
+   top: calc(50% + 25px);
+   transform: translate(-50%,-50%);
+   z-index: 10000;
+   max-height: calc(100% - 85px);
+   max-width: 100%;
+}
+.proofView .CloseBtn {
+   position: absolute;
+   background: #a9a9a9;
+   width: 30px;
+   height: 30px;
+   display: block;
+   color: #fff;
+   cursor: pointer;
+   font-size: 25px;
+   line-height: 25px;
+   text-align: center;
+   border-radius: 50px;
+   top: -15px;
+   right: -15px;
+}
+.proofView .ImgSection {
+   border: 2px solid #c8c8c8;
+}

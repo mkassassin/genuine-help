@@ -1,0 +1,40 @@
+
+.card{
+   width: 100%;
+   min-height: 200px;
+   box-shadow: 1px 1px 10px #c5c5c5;
+   margin-bottom: 20px;
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+}
+
+.card .key-value {
+   display: grid;
+   grid-template-columns: auto auto;
+   justify-content: flex-start;
+   grid-gap: 10px;
+}
+.card .key-value .key{
+   font-weight: 500;
+   color: #6c757d;
+}
+.card .key-value .value{
+   font-weight: 500;
+   color: seagreen;
+}
+.box-action-bar {
+   justify-content: flex-end;
+   display: flex;
+}
+
+.card.soon {
+   color: #19682a94;
+   padding-top: 60px;
+}
+.card.soon .card-title {
+   text-align: center;
+}
+.card.soon .card-title p span{
+   font-weight: 600;
+}

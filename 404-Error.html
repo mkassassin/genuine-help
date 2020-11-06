@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Client</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- CSS Files -->
+  <style> 
+  .flex-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    color: rgb(49, 58, 100);
+}
+.error-msg-box {
+    padding: 5px;
+    margin: 10px;
+}
+.content-box {
+    padding: 15px;
+}
+.error-msg-box .content-box h1 {
+    letter-spacing: 1.5px;
+    font: 600 10em Roboto, "Helvetica Neue", sans-serif;
+}
+.error-msg-box .content-box h4 {
+    font-size: 3em;
+    font-weight: 500;
+    margin-bottom: 31px;
+}
+.error-msg-box .content-box p {
+    font-weight: 500;
+    letter-spacing: 0.8px;
+}
+
+  </style>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="error-msg-box">
+            <div class="content-box">
+              <h1>404</h1>
+              <h4>Not Found</h4>
+              <p>The resource requested could not be found on this server!</p>
+            </div>          
+        </div>
+    </div>  
+</body>
+</html>

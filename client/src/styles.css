@@ -1,0 +1,150 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+   height: 100%;
+}
+body {
+   color: #495057;
+   margin: 0;
+   font-family: Roboto, "Helvetica Neue", sans-serif;
+   /* background-image: url(./assets/img/green-pg.png);
+   background-repeat: no-repeat;
+   background-size: cover;
+   -moz-background-size: cover;
+   -webkit-background-size: cover;
+   -o-background-size: cover;
+   -ms-background-size: cover;
+   background-position: center center; */
+}
+body > .background-green{
+   position: fixed;
+   width: 100%;
+   height: 100%;
+   background: #1f8336;
+   background-image: linear-gradient(to left top, #000000e6, #1f8336);
+   z-index: -1;
+}
+.common-keyValue .key-value{
+   display: grid;
+   grid-template-columns: auto auto;
+   justify-content: flex-start;
+   grid-gap: 10px;
+}
+.common-keyValue .key-value .key{
+   font-weight: 500;
+   color: #6c757d;
+}
+.common-keyValue .key-value .value{
+   font-weight: 500;
+   color: seagreen;
+}
+
+
+
+
+
+
+/* Model Style */
+.modal-content{
+   border: none !important;
+}
+.custom-modal.modal-container {
+   position: relative;
+}
+.custom-modal.modal-container .modal-close-btn {
+   position: absolute;
+   top: 0;
+   width: 50px;
+   height: 50px;
+   font-size: 26px;
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 70px;
+   cursor: pointer;
+   z-index: 1;
+   background-color: #1f8036 !important;
+   background-image: linear-gradient(90deg,rgb(0 0 0 / 77%),#1f8336) !important;
+}
+.custom-modal.modal-container .modal-close-btn .close-icon {
+   position: absolute;
+   top: 7px;
+   left: 10px;
+   color: #FFFFFF;
+}
+.custom-modal.modal-container .content-area {
+   position: relative;
+}
+.custom-modal.modal-container .content-area h1 {
+   text-align: center;
+   padding-top: 10px;
+}
+.custom-modal.modal-container .content-area .modal-content-body {
+   max-height: 440px;
+   overflow: auto;
+   margin: 15px 25px;
+   padding: 15px;    
+   z-index: 1;
+   position: relative;
+}
+.custom-modal.modal-container .modal-footer {
+   background: #efefef1c;
+   padding: 10px;
+   padding-bottom: 15px;
+   border: 0;
+   z-index: 1;
+   position: relative;
+   margin-top: 0;
+   text-align: left;
+   border: 0;
+   border-top: 1px dashed  rgb(192 192 192 / 68%);
+}
+
+/* Material Overwrite */
+.mat-form-field{
+   width: 100%;
+   margin-bottom: 5px;
+}
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+   color: #1f8036;
+}
+.mat-form-field.mat-focused .mat-form-field-label {
+   color: #1f8036;
+}
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+    background: #1f8036 !important;
+}
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+   background-color: #1f8036 !important;
+}
+.mat-menu-panel{
+   min-height: auto !important;
+}
+.mat-menu-content:not(:empty){
+   padding: 0 !important;
+}
+button:focus {
+   outline: none !important;
+}
+.custom-snackBar {
+   font-weight: 400;
+   letter-spacing: 0.3px;
+   background: #ffffff;
+   color: #008000;
+}
+.custom-snackBar.color-red {
+   color: #FF4500;
+}
+.custom-snackBar.color-yellow {
+   color: #FF8C00;
+}
+.custom-snackBar .mat-simple-snackbar-action {
+   color: silver;
+}
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+   background-color: #1f8036 !important;
+   background-image: linear-gradient(90deg,rgb(0 0 0 / 77%),#1f8336) !important;
+}
+.mat-raised-button.mat-primary[disabled], .mat-raised-button[disabled][disabled]{
+   color: #ffffff;
+   opacity: 0.6;
+   cursor: not-allowed;
+}

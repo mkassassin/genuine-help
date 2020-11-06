@@ -1,0 +1,49 @@
+<section class="login-center">
+   <div class="login-container">
+      <div class="login-logo">
+         <img src="./../../../assets/img/logo.png" alt="Logo">
+      </div>
+      <div class="login-title">
+         <p> Login </p>
+      </div>
+      <div class="login-form">
+         <form [formGroup]="loginForm" autocomplete="off">
+            <div class="row">
+               <div class="col-md-12 col-sm-12">
+                  <mat-form-field appearance="outline">
+                     <mat-label> E-mail <span class="input-required"> *</span> </mat-label>
+                     <input type="email" matInput formControlName="email" placeholder="E-mail">
+                     <mat-error *ngIf="loginForm.get('email').errors && loginForm.get('email').hasError('required')"> Please enter your E-mail </mat-error>
+                     <mat-error *ngIf="loginForm.get('email').errors && loginForm.get('email').hasError('email')"> Please enter valid E-mail </mat-error>
+                  </mat-form-field>
+               </div>
+               <div class="col-md-12 col-sm-12">
+                  <mat-form-field appearance="outline">
+                     <mat-label> Password <span class="input-required"> *</span> </mat-label>
+                     <input type="password" matInput formControlName="password" placeholder="Password">
+                     <mat-error *ngIf="loginForm.get('password').errors && loginForm.get('password').hasError('required')"> Please enter your Password </mat-error>
+                  </mat-form-field>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="login-btn" [ngClass]="{'disabled': loginForm.status !== 'VALID' || uploading }">
+                     <button type="button" [disabled]="loginForm.status !== 'VALID' || uploading" (click)="submit()" >
+                        <ng-container *ngIf="uploading"> Verifying... </ng-container>
+                        <ng-container *ngIf="!uploading"> Loin </ng-container>
+                        <div class="fill-one"></div>
+                     </button>
+                  </div>
+               </div>
+            </div>
+            <!-- <div class="row">
+               <div class="col-sm-12">
+                  <section class="No-Account">
+                     <p> Not a account ? <a [routerLink]="['/registration']"> Register here </a> </p>
+                   </section>
+               </div>
+            </div> -->
+        </form>	
+      </div>
+   </div>
+</section>

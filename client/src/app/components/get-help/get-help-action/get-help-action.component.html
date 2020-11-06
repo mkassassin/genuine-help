@@ -1,0 +1,72 @@
+<section *ngIf="CustomerInfo !== null" class="getHelp-Section">
+   <div class="requestsList">
+      <div class="getHelpTitle">
+         <h2> Get Help </h2>
+      </div>
+      <div *ngFor="let Request of provideHelpRequests; let i=index" class="requestDetails">
+         <div class="requestContent">
+            <div class="row">
+               <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="key-value">
+                     <p class="key"> ID: </p>
+                     <p class="value"> {{Request.customer.uniqueCode}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Name: </p>
+                     <p class="value"> {{Request.customer.name}}  </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Mobile: </p>
+                     <p class="value"> {{Request.customer.mobile}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> WhatsApp: </p>
+                     <p class="value"> {{Request.customer.whatsApp}} </p>
+                  </div>
+               </div>
+               <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="key-value extraBold">
+                     <p class="key"> Status: </p>
+                     <p class="value">
+                        <ng-container *ngIf="Request.status === 'Available'"> Open </ng-container>
+                        <ng-container *ngIf="Request.status === 'Requested'"> Requested </ng-container>
+                        <ng-container *ngIf="Request.status === 'RequestedAccepted'"> Request Accepted </ng-container>
+                        <ng-container *ngIf="Request.status === 'PaymentSent'"> Payment Proof Updated </ng-container>
+                        <ng-container *ngIf="Request.status === 'PaymentVerified'"> Payment Completed </ng-container>
+                        <ng-container *ngIf="Request.status === 'PaymentReported'"> Payment Reported to the Admin </ng-container>
+                     </p>
+                  </div>
+                  <div class="key-value extraBold">
+                     <p class="key"> Amount: </p>
+                     <p class="value"> Rs.{{Request.transferAmount}} </p>
+                  </div>
+                  <div *ngIf="Request.status === 'PaymentSent' || Request.status === 'PaymentVerified' || Request.status === 'PaymentReported'" class="key-value">
+                     <p class="key"> Remarks </p>
+                     <p class="value"> {{Request.remarks}} </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="requestAction">
+            <div *ngIf="Request.status === 'Requested'" >
+               <button (click)="acceptRequest(i)" mat-raised-button color="primary"> Accept </button>
+            </div>
+            <div *ngIf="Request.status === 'PaymentSent' || Request.status === 'PaymentVerified' || Request.status === 'PaymentReported'" >
+               <button (click)="OpenProofModel(ProofTemplate, i)" mat-raised-button > View Uploaded Proof </button>
+            </div>
+            <div *ngIf="Request.status === 'PaymentSent'">
+               <button (click)="paymentAcceptRequest(i)" mat-raised-button color="primary"> Approve </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<ng-template #ProofTemplate>
+   <div class="proofView">
+      <span class="CloseBtn" (click)="modalReference.hide()"> x </span>
+      <div class="ImgSection">
+         <img [ngStyle]="{'max-height': screenHeight + 'px', 'max-width': screenWidth + 'px' }" src="{{proofPreview}}" alt="">
+      </div>
+   </div>
+</ng-template>
