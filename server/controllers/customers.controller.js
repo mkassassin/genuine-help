@@ -166,44 +166,68 @@ exports.customer_login = function (req, res) {
                         if (result_1.Active_Status && !result_1.If_Deleted ) {
                            res.status(200).send({ Status: false, Message: "Email and Password do not match!" });
                         } else {
-                           res.status(200).send({ Status: false, Message: "Your Account has Deactivated or Removed!" });
+                           if (result_1.deActiveReason !== undefined && result_1.deActiveReason !== null && result_1.deActiveReason !== '') {
+                              res.status(200).send({ Status: false, Message: result_1.deActiveReason });
+                           } else {
+                              res.status(200).send({ Status: false, Message: "Your Account has Deactivated or Removed!" });
+                           }
                         }
                      }
                   }
                });
             } else {
-               var RandomToken = crypto.randomBytes(32).toString("hex");
-               var UserData = JSON.parse(JSON.stringify(result));
-               UserData.Token = RandomToken;
-               var UserHash = CryptoJS.SHA512(JSON.stringify(UserData)).toString(CryptoJS.enc.Hex);
-               var Ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-               var DeviceInfo = parser(req.headers['user-agent']);
-               var LoginFrom = JSON.stringify({
-                  Ip: Ip,
-                  Request_From_Origin: req.headers.origin,
-                  Request_From: req.headers.referer,
-                  Request_Url: req.url,
-                  Request_Body: req.body,
-                  If_Get: req.params,
-                  Device_Info: DeviceInfo,
-               });
-               var LoginHistory = new customersModel.LoginHistorySchema({
-                  customer: result._id,
-                  LoginToken: RandomToken,
-                  Hash: UserHash,
-                  LastActive: new Date(),
-                  LoginFrom: LoginFrom,
-                  Active_Status: true,
-                  If_Deleted: false,
-               });
-               LoginHistory.save((err_2, result_2) => {
-                  if (err_2) {
-                     ErrorHandling.ErrorLogCreation(req, 'Customer Login  Error', 'customers.Controller -> customer_login', JSON.stringify(err_2));
-                     res.status(417).send({ Status: false, Message: "Some error occurred while Validate Customer!" });
+               Promise.all([
+                  customersModel.CustomersManagementSchema.find({ referBy: result.id }, {password: 0}, {}).exec(),
+               ]).then(response => {
+                  var referrals = response[0];
+                  var activeReferrals = 0;
+                  referrals.map(obj => {
+                     if (obj.Active_Status && !obj.If_Deleted) {
+                        activeReferrals = activeReferrals + 1;
+                     }
+                  });
+                  var after96Hrs = (result.provideCompletionDate !== null && result.currentLevel === 'Level_1') ? new Date(new Date(result.provideCompletionDate).setHours(new Date(result.provideCompletionDate).getHours() + 96)) : new Date();
+                  if (result.currentLevel === 'Level_1' && result.getHelpStatus === 'Pending' && result.provideHelpStatus === 'Completed' && after96Hrs.valueOf() <= new Date().valueOf() && activeReferrals < 3) {
+                     customersModel.CustomersManagementSchema.updateOne({_id: result._id}, { $set: {Active_Status: false, If_Deleted: true, deActiveReason: 'You are not completing the 3 active referrals within 4Days, so your account has blocked.' }}).exec();
+                     res.status(200).send({ Status: false, Message: "You are not completing the 3 active referrals within 4Days, so your account has blocked." });
                   } else {
-                     var ReturnResponse = CryptoJS.AES.encrypt(JSON.stringify(result), RandomToken.slice(3, 10)).toString();
-                     res.status(200).send({ Status: true, Key: RandomToken, Response: ReturnResponse });}
-               });                        
+                     var RandomToken = crypto.randomBytes(32).toString("hex");
+                     var UserData = JSON.parse(JSON.stringify(result));
+                     UserData.Token = RandomToken;
+                     var UserHash = CryptoJS.SHA512(JSON.stringify(UserData)).toString(CryptoJS.enc.Hex);
+                     var Ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+                     var DeviceInfo = parser(req.headers['user-agent']);
+                     var LoginFrom = JSON.stringify({
+                        Ip: Ip,
+                        Request_From_Origin: req.headers.origin,
+                        Request_From: req.headers.referer,
+                        Request_Url: req.url,
+                        Request_Body: req.body,
+                        If_Get: req.params,
+                        Device_Info: DeviceInfo,
+                     });
+                     var LoginHistory = new customersModel.LoginHistorySchema({
+                        customer: result._id,
+                        LoginToken: RandomToken,
+                        Hash: UserHash,
+                        LastActive: new Date(),
+                        LoginFrom: LoginFrom,
+                        Active_Status: true,
+                        If_Deleted: false,
+                     });
+                     LoginHistory.save((err_2, result_2) => {
+                        if (err_2) {
+                           ErrorHandling.ErrorLogCreation(req, 'Customer Login  Error', 'customers.Controller -> customer_login', JSON.stringify(err_2));
+                           res.status(417).send({ Status: false, Message: "Some error occurred while Validate Customer!" });
+                        } else {
+                           var ReturnResponse = CryptoJS.AES.encrypt(JSON.stringify(result), RandomToken.slice(3, 10)).toString();
+                           res.status(200).send({ Status: true, Key: RandomToken, Response: ReturnResponse });}
+                     });
+                  }
+               }).catch(error => {
+                  ErrorHandling.ErrorLogCreation(req, 'Customer Referrals validating Error', 'customers.Controller -> customer_login', JSON.stringify(error));
+                  res.status(417).send({Status: false, ErrorCode: 417, Message: "Some error occurred while Validate The Customer Referrals!."});
+               });                    
             }
          }
       });
@@ -246,6 +270,37 @@ exports.customerDetails = function (req, res) {
       }).catch( error => {
          ErrorHandling.ErrorLogCreation(req, 'Customer Details getting Error', 'customers.Controller -> customerDetails', JSON.stringify(error));
          res.status(417).send({ Status: false, ErrorCode: 417, Message: "Some error occurred while find The Customer Details!.", Error: error });
+      });
+   }
+};
+
+
+// Customer Referrals List
+exports.referralsList = function (req, res) {
+   var receivingData = req.body;
+   if (!receivingData.id || receivingData.id === '' || !ObjectId.isValid(receivingData.id)) {
+       res.status(417).send({ Status: false, Message: "Customer Details can not be empty" });
+   } else {
+      receivingData.id = ObjectId(receivingData.id);
+      customersModel.CustomersManagementSchema.aggregate([
+         { $match : { referBy : receivingData.id } },
+         { $lookup: {
+            from: "customers",
+            let: { "id": "$_id"},
+            pipeline: [
+               { $match: { $expr: { $eq: ["$$id", "$referBy"] } } },
+               { $project: { "name": 1, "uniqueCode": 1, "email": 1, "mobile": 1, "currentLevel": 1, "Active_Status": 1, "If_Deleted": 1 }}
+            ],
+            as: 'referrals' }
+         },
+         { $project: { "name": 1, "uniqueCode": 1, "email": 1, "mobile": 1, "currentLevel": 1, "Active_Status": 1, "If_Deleted": 1, "referrals": 1 }}
+      ]).exec((err, result) => {
+         if (err) {
+            ErrorHandling.ErrorLogCreation(req, 'Referrals List getting Error', 'customers.Controller -> referralsList', JSON.stringify(err));
+            res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while find the Referrals List!.", Error: err });
+         } else {
+            res.status(200).send({ Status: true, Response: result });
+         }
       });
    }
 };

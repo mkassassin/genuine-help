@@ -59,6 +59,14 @@ export class GetHelpActionComponent implements OnInit {
          this.Service.provideHelpRequest_toMe({customer: this.CustomerInfo._id }).subscribe(response => {
             if (response.Status) {
                this.provideHelpRequests = response.Response;
+               this.provideHelpRequests = this.provideHelpRequests.map(obj => {
+                  obj.rejectEnabled = false;
+                  const after12hrs = new Date(new Date(obj.updatedAt).setHours(new Date(obj.updatedAt).getHours() + 12)).valueOf();
+                  if (obj.status === 'RequestedAccepted' && after12hrs < new Date().valueOf()) {
+                     obj.rejectEnabled = true;
+                  }
+                  return obj;
+               });
             } else {
                if (response.Message === undefined || response.Message === '') {
                   response.Message = 'Some error occoured!, Please try again';
@@ -95,6 +103,26 @@ export class GetHelpActionComponent implements OnInit {
       });
    }
 
+   rejectRequest(idx: any) {
+      const Data = {
+         customer : this.CustomerInfo._id,
+         provideHelp: this.provideHelpRequests[idx]._id
+      };
+      this.Service.provideHelpRequest_Reject(Data).subscribe(response => {
+         if (response.Status) {
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+               this.router.navigate(['/get-help'])
+            );
+            this.snackBar.open('Request Successfully Rejected, We will assign new Provide-Help request to you soon', 'X', { panelClass: ['custom-snackBar', 'color-green'], duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
+         } else {
+            if (response.Message === undefined || response.Message === '') {
+               response.Message = 'Some error occoured!, Please try again';
+            }
+            this.snackBar.open(response.Message, 'X', { panelClass: ['custom-snackBar', 'color-red'], duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
+         }
+      });
+   }
+
    paymentAcceptRequest(idx: any) {
       const Data = {
          customer : this.CustomerInfo._id,
@@ -102,10 +130,18 @@ export class GetHelpActionComponent implements OnInit {
       };
       this.Service.provideHelpRequest_PaymentAccept(Data).subscribe(response => {
          if (response.Status) {
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-               this.router.navigate(['/get-help'])
-            );
-            this.snackBar.open('Request Successfully Accepted', 'X', { panelClass: ['custom-snackBar', 'color-green'], duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
+            const pendingPhRequests = [];
+            this.provideHelpRequests.map(obj => {
+               if (obj.status !== 'PaymentVerified') { pendingPhRequests.push(obj); }
+            });
+            if (pendingPhRequests.length === 1 && pendingPhRequests[0]._id === Data.provideHelp) {
+               this.router.navigate(['/dashboard']);
+            } else {
+               this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+                  this.router.navigate(['/get-help'])
+               );
+            }
+            this.snackBar.open('Payment Successfully Accepted', 'X', { panelClass: ['custom-snackBar', 'color-green'], duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
          } else {
             if (response.Message === undefined || response.Message === '') {
                response.Message = 'Some error occoured!, Please try again';

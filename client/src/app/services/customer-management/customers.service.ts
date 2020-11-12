@@ -35,6 +35,10 @@ export class CustomersService {
       return this.http.post<any>(StageURL + 'customerDetails', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
+   referralsList(data: any): Observable<any> {
+      return this.http.post<any>(StageURL + 'referralsList', data).pipe(map(res => res), catchError(err => of(err)));
+   }
+
    ifLoggedIn() {
       if (localStorage.getItem('Session') && localStorage.getItem('SessionKey') && localStorage.getItem('SessionVerify')) {
          const LastSession = new Date(atob(localStorage.getItem('SessionVerify'))).getTime();

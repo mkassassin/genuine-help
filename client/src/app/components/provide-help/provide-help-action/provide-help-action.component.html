@@ -74,9 +74,19 @@
             </div>
          </div>
       </div>
+      <div *ngIf="GetHelpRequests.length === 0" class="no-more-requests">
+         <h3>
+            Please try again later, <br> now no request available to get-help.
+         </h3>
+      </div>
    </div>
-   <div *ngIf="CustomerInfo.provideHelpStatus === 'Open'" class="provideHelp-action">
-      <button (click)="sendPaymentRequest()" mat-raised-button color="primary"> Payment Send Request </button>
+   <div *ngIf="CustomerInfo.provideHelpStatus === 'Open' && GetHelpRequests.length > 0" class="provideHelp-action">
+      <ng-container *ngIf="RequestInProgress">
+         <button [disabled]="true" mat-raised-button color="primary"> Request in progress... </button>
+      </ng-container>
+      <ng-container *ngIf="!RequestInProgress">
+         <button (click)="sendPaymentRequest()" mat-raised-button color="primary"> Payment Send Request </button>
+      </ng-container>
    </div>
 </section>
 

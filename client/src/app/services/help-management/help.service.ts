@@ -38,6 +38,10 @@ export class HelpService {
       return this.http.post<any>(StageURL + 'getHelpRequest_toMe', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
+   provideHelpRequest_Reject(data: any): Observable<any> {
+      return this.http.post<any>(StageURL + 'provideHelpRequest_Reject', data).pipe(map(res => res), catchError(err => of(err)));
+   }
+
    provideHelp_PaymentProofUpdate(data: any): Observable<any> {
       return this.http.post<any>(StageURL + 'provideHelp_PaymentProofUpdate', data).pipe(map(res => res), catchError(err => of(err)));
    }

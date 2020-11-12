@@ -7,6 +7,7 @@ module.exports = function (app) {
    app.post('/API/helpManagement/provideHelpRequest_toMe/', Controller.provideHelpRequest_toMe);
    app.post('/API/helpManagement/provideHelpRequest_Accept/', Controller.provideHelpRequest_Accept);
    app.post('/API/helpManagement/getHelpRequest_toMe/', Controller.getHelpRequest_toMe);
+   app.post('/API/helpManagement/provideHelpRequest_Reject/', Controller.provideHelpRequest_Reject);
    app.post('/API/helpManagement/provideHelp_PaymentProofUpdate/', Controller.provideHelp_PaymentProofUpdate);
    app.post('/API/helpManagement/provideHelpRequest_PaymentAccept/', Controller.provideHelpRequest_PaymentAccept);
 

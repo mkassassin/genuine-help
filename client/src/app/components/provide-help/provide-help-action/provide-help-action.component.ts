@@ -26,6 +26,9 @@ export class ProvideHelpActionComponent implements OnInit {
    screenHeight: any;
    screenWidth: any;
 
+   provideHelpAmount = 50;
+   RequestInProgress = false;
+
    constructor(
       public ModalService: BsModalService,
       public ModalServiceOne: BsModalService,
@@ -57,10 +60,31 @@ export class ProvideHelpActionComponent implements OnInit {
       this.screenWidth = window.innerWidth - 40;
    }
 
+   eligibilityGet() {
+      if (this.CustomerInfo !== null) {
+         const currentLevel = this.CustomerInfo.currentLevel.split('_')[1];
+         const LevelCode = parseInt(currentLevel, 10);
+         const Arr = Array(LevelCode).fill(1).map((x, y) => (x + y) * 3);
+         let PHAmount = 50;
+         let lastAmount = 25;
+         Arr.map(obj => {
+            PHAmount = lastAmount * 2;
+            lastAmount = PHAmount;
+         });
+         if (LevelCode > 3 && LevelCode < 5) {
+            PHAmount = PHAmount + 50;
+         } else if (LevelCode > 4 && LevelCode < 9) {
+            PHAmount = PHAmount + 150;
+         }
+         this.provideHelpAmount = PHAmount;
+      }
+   }
+
    provideHelpDataFind() {
+      this.eligibilityGet();
       if (this.CustomerInfo !== null) {
          if (this.CustomerInfo.provideHelpStatus === 'Open') {
-            this.Service.Available_GetHelpRequestsList({id: this.CustomerInfo._id, provideAmount: 50 }).subscribe(response => {
+            this.Service.Available_GetHelpRequestsList({id: this.CustomerInfo._id, provideAmount: this.provideHelpAmount }).subscribe(response => {
                if (response.Status) {
                   this.GetHelpRequests = response.Response;
                } else {
@@ -92,6 +116,7 @@ export class ProvideHelpActionComponent implements OnInit {
    }
 
    sendPaymentRequest() {
+      this.RequestInProgress = true;
       const getHelpRequest = [];
       this.GetHelpRequests.map(obj => {
          const newObj = {

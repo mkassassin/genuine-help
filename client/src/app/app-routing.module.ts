@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProvideHelpActionComponent } from './components/provide-help/provide-help-action/provide-help-action.component';
 import { GetHelpActionComponent } from './components/get-help/get-help-action/get-help-action.component';
+import { ReferralsListComponent } from './components/referrals/referrals-list/referrals-list.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,12 @@ const routes: Routes = [
    {
       path: 'get-help',
       component: GetHelpActionComponent,
+      canActivate: [AuthGuard],
+      data: {}
+   },
+   {
+      path: 'referrals-list',
+      component: ReferralsListComponent,
       canActivate: [AuthGuard],
       data: {}
    }

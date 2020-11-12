@@ -13,7 +13,7 @@ exports.getHelpRequest_Create = function (req, res) {
    } else if (!receivingData.requestAmount || receivingData.requestAmount === '') {
       res.status(400).send({ Status: false, Message: "Request Amount can not be empty" });
    } else {
-      customersModel.CustomersManagementSchema.findOne({_id: ObjectId(receivingData.customer), getHelpStatus: 'Open', Active_Status: true, If_Deleted: false }, {}, {})
+      customersModel.CustomersManagementSchema.findOne({_id: ObjectId(receivingData.customer), getHelpStatus: {$ne: 'In-Progress' }, Active_Status: true, If_Deleted: false }, {}, {})
       .exec( (err, result) => {
          if (err) {
             ErrorHandling.ErrorLogCreation(req, 'Customer details getting Error', 'help.Controller -> getHelpRequest_Create', JSON.stringify(err));
@@ -63,7 +63,7 @@ exports.Available_GetHelpRequestsList = function (req, res) {
    } else {
       Promise.all([
          customersModel.CustomersManagementSchema.findOne({ _id: ObjectId(receivingData.id), Active_Status: true, If_Deleted: false}, {password: 0}, {}).exec(),
-         helpModel.getHelpManagementSchema.find({status: {$ne: 'Completed'}}, {}, {sort: {createdAt: 1}})
+         helpModel.getHelpManagementSchema.find({status: {$ne: 'Completed'}, pendingAmount: {$gt: 0}}, {}, {sort: {createdAt: 1}})
          .populate({path: 'customer', select: ['name', 'uniqueCode', 'mobile', 'whatsApp', 'accNum', 'branch', 'ifscCode', 'UPIid'] })
          .exec(),
       ]).then(response => {
@@ -218,12 +218,12 @@ exports.provideHelpRequest_toMe = function (req, res) {
    } else {
       Promise.all([
          customersModel.CustomersManagementSchema.findOne({_id: ObjectId(receivingData.customer), getHelpStatus: {$ne: 'Pending'}, Active_Status: true, If_Deleted: false }, {}, {}).exec(),
-         helpModel.getHelpManagementSchema.findOne({customer: ObjectId(receivingData.customer), status: {$ne: 'Completed' } }, {}, {}).exec()
+         helpModel.getHelpManagementSchema.findOne({customer: ObjectId(receivingData.customer), status: {$ne: 'Completed' }, Active_Status: true, If_Deleted: false }, {}, {}).exec()
       ]).then(response => {
          var customer = response[0];
          var getHelpRequest =  response[1];
          if (customer !== null && getHelpRequest !== null) {
-            helpModel.provideHelpManagementSchema.find({getHelp: getHelpRequest._id })
+            helpModel.provideHelpManagementSchema.find({getHelp: getHelpRequest._id, Active_Status: true, If_Deleted: false  })
             .populate({path: 'customer', select: ['name', 'uniqueCode', 'mobile', 'whatsApp', 'accNum', 'branch', 'ifscCode', 'UPIid'] })
             .populate({path: 'getHelp', select: ['totalRequestAmount', 'pendingAmount', 'requestAmountInProgress', 'inTransferAmount', 'completedAmount', 'requestedDate'] })
             .exec((err, result) => {
@@ -283,7 +283,7 @@ exports.provideHelpRequest_Accept = function (req, res) {
             res.status(400).send({ Status: false, Message: "Invalid customer details" });
          }
       }).catch(error => {
-         ErrorHandling.ErrorLogCreation(req, 'Customer details getting Error', 'help.Controller -> provideHelpRequest_toMe', JSON.stringify(error));
+         ErrorHandling.ErrorLogCreation(req, 'Customer details getting Error', 'help.Controller -> provideHelpRequest_Accept', JSON.stringify(error));
          res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while find the customer details!.", Error: error });
       });
    }
@@ -308,15 +308,17 @@ exports.getHelpRequest_toMe = function (req, res) {
          if (customer !== null && getHelpRequest.length > 0) {
             var returnRequests = [];
             getHelpRequest.map(obj => {
-               const newObj = {
-                  customer: obj.getHelp.customer,
-                  ProvideHelpId: obj._id,
-                  transferAmount: obj.transferAmount,
-                  remarks: obj.remarks,
-                  proofFile: obj.proofFile || '',
-                  status: obj.status
-               };
-               returnRequests.push(newObj);
+               if (obj.level === customer.currentLevel) {
+                  const newObj = {
+                     customer: obj.getHelp.customer,
+                     ProvideHelpId: obj._id,
+                     transferAmount: obj.transferAmount,
+                     remarks: obj.remarks,
+                     proofFile: obj.proofFile || '',
+                     status: obj.status
+                  };
+                  returnRequests.push(newObj);
+               }
             });
             res.status(200).send({ Status: true, Response: returnRequests });
          } else {
@@ -324,6 +326,53 @@ exports.getHelpRequest_toMe = function (req, res) {
          }
       }).catch(error => {
          ErrorHandling.ErrorLogCreation(req, 'Customer details getting Error', 'help.Controller -> provideHelpRequest_toMe', JSON.stringify(error));
+         res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while find the customer details!.", Error: error });
+      });
+   }
+};
+
+
+// Provide Help Request Reject ------------------------------------------ 
+exports.provideHelpRequest_Reject = function (req, res) {
+   var receivingData = req.body;
+
+   if (!receivingData.customer || receivingData.customer === '' || !ObjectId.isValid(receivingData.customer)) {
+      res.status(400).send({ Status: false, Message: "Customer can not be empty" });
+   } else if (!receivingData.provideHelp || receivingData.provideHelp === '' || !ObjectId.isValid(receivingData.provideHelp)) {
+      res.status(400).send({ Status: false, Message: "provide help details invalid" });
+   } else {
+      var before72hrs = new Date( new Date().setHours(new Date().getHours() - 12));
+      Promise.all([
+         customersModel.CustomersManagementSchema.findOne({_id: ObjectId(receivingData.customer), Active_Status: true, If_Deleted: false }, {}, {}).exec(),
+         helpModel.provideHelpManagementSchema.findOne({_id: ObjectId(receivingData.provideHelp), status: 'RequestedAccepted', updatedAt: { $lte: before72hrs } }, {}, {}).exec()
+      ]).then(response => {
+         var customer = response[0];
+         var provideHelpRequest =  response[1];
+         if (customer !== null && provideHelpRequest !== null) {
+            helpModel.provideHelpManagementSchema.updateOne({_id: provideHelpRequest._id}, { $set: {status: 'RequestedRejected', Active_Status: false, If_Deleted: true } } ).exec((err, result) => {
+               if (err) {
+                  ErrorHandling.ErrorLogCreation(req, 'Provide help request reject getting Error', 'help.Controller -> provideHelpRequest_Reject', JSON.stringify(err));
+                  res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while reject Provide help request!.", Error: err });
+               } else {
+                  const reqAmount = provideHelpRequest.transferAmount;
+                  const inTransfer = provideHelpRequest.transferAmount - (provideHelpRequest.transferAmount * 2);
+                  helpModel.getHelpManagementSchema.updateOne({_id: provideHelpRequest.getHelp}, { $inc: { pendingAmount: reqAmount, inTransferAmount: inTransfer} })
+                  .exec((err_1, result_1) => {
+                     if (err_1) {
+                        ErrorHandling.ErrorLogCreation(req, 'Get help request update getting Error', 'help.Controller -> provideHelpRequest_Accept', JSON.stringify(err_1));
+                        res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while update Get help request!.", Error: err_1 });
+                     } else {
+                        customersModel.CustomersManagementSchema.updateOne({_id: ObjectId(provideHelpRequest.customer)}, { $set: { provideHelpStatus: 'Open', Active_Status: false, If_Deleted: true, deActiveReason: 'You are not completing the provide help payment within 12Hours, so your account has blocked.' }}).exec();
+                        res.status(200).send({ Status: true, Response: result });
+                     }
+                  });
+               }
+            });
+         } else {
+            res.status(400).send({ Status: false, Message: "Invalid customer details" });
+         }
+      }).catch(error => {
+         ErrorHandling.ErrorLogCreation(req, 'Customer details getting Error', 'help.Controller -> provideHelpRequest_Reject', JSON.stringify(error));
          res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while find the customer details!.", Error: error });
       });
    }
@@ -392,14 +441,17 @@ exports.provideHelpRequest_PaymentAccept = function (req, res) {
             Promise.all([
                helpModel.provideHelpManagementSchema.updateOne({_id: provideHelpRequest._id}, { $set: {status: 'PaymentVerified' } } ).exec(),
                helpModel.getHelpManagementSchema.findOne({_id: provideHelpRequest.getHelp} ).exec(),
-               helpModel.provideHelpManagementSchema.find({customer: ObjectId(provideHelpRequest.customer), $or: [{status: 'PaymentSent'}, {status: 'PaymentReported'}] }, {}, {}).exec()
+               helpModel.provideHelpManagementSchema.find({customer: ObjectId(provideHelpRequest.customer), $or: [{status: 'Requested'}, {status: 'RequestedAccepted'}, {status: 'PaymentSent'}] }, {}, {}).exec()
             ]).then(response_1 => {
                var getHelpData = response_1[1];
                var provideHelpData = response_1[2];
                if (getHelpData.pendingAmount === 0 && getHelpData.requestAmountInProgress === 0 && getHelpData.inTransferAmount === provideHelpRequest.transferAmount) {
+                  const LevelCode = customer.currentLevel.split('_')[1];
+                  const nextLevelCode = parseInt(LevelCode, 10);
+                  const nextLevel = 'Level_' + (nextLevelCode + 1);
                   Promise.all([
-                     helpModel.getHelpManagementSchema.updateOne({_id: provideHelpRequest.getHelp}, { $inc: {status: 'Completed', inTransferAmount: 0, completedAmount: getHelpData.completedAmount} }).exec(),
-                     customersModel.CustomersManagementSchema.updateOne({_id: ObjectId(receivingData.customer)}, { $set: { getHelpStatus: 'Completed', getHelpCompletionDate: new Date() }}).exec()
+                     helpModel.getHelpManagementSchema.updateOne({_id: provideHelpRequest.getHelp}, { $set: {status: 'Completed',  inTransferAmount: 0, completedAmount: (getHelpData.completedAmount + provideHelpRequest.transferAmount) } }).exec(),
+                     customersModel.CustomersManagementSchema.updateOne({_id: ObjectId(receivingData.customer)}, { $set: { currentLevel: nextLevel, getHelpStatus: 'Completed', provideHelpStatus: 'Open', getHelpCompletionDate: new Date() }}).exec()
                   ]).then(response_2 => {
                      res.status(200).send({ Status: true, Response: response_2[0] });
                   }).catch( error => {

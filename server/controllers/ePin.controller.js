@@ -55,7 +55,7 @@ exports.ePins_create = function (req, res) {
                      ErrorHandling.ErrorLogCreation(req, 'E-Pins insert getting Error', 'ePin.Controller -> ePins_create', JSON.stringify(err));
                      res.status(417).send({ Http_Code: 417, Status: false, Message: "Some error occurred while Creating the E-Pins!.", Error: err_1 });
                   } else {
-                     res.status(200).send({ Status: true, Message: 'E-Pins Successfully Created', Response: result_1 });
+                     res.status(200).send({ Status: true, Message: 'E-Pins Successfully Created', Response: result_1, EPinArr: EPinArr });
                   }
                });
             }).catch(error => {

@@ -22,7 +22,9 @@
                   </div>
                </ng-container>
                <ng-container *ngIf="provideHelp?.Status === 'Locked'">
-                  <p> Access Eligible on <span> {{provideHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+                  <p *ngIf="withdrawal.Status === 'Locked' && getHelp.Status === 'Locked'"> Access Eligible on <span> {{provideHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+                  <p *ngIf="getHelp.Status === 'Active'"> Access Eligible after completing the <span> Get Help  </span> </p>
+                  <p *ngIf="withdrawal.Status === 'Active'"> Access Eligible after the <span> Withdrawals Raise Request </span> </p>
                </ng-container>
             </div>
          </div>
@@ -49,7 +51,9 @@
                   </div>
                </ng-container>
                <ng-container *ngIf="getHelp?.Status === 'Locked'">
-                  <p> Access Eligible on <span> {{getHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+                  <p *ngIf="withdrawal.Status === 'Locked' && provideHelp.Status === 'Locked'"> Access Eligible on <span> {{getHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+                  <p *ngIf="provideHelp.Status === 'Active'"> Access Eligible after completing the <span> Provide Help  </span> </p>
+                  <p *ngIf="withdrawal.Status === 'Active'"> Access Eligible after the <span> withdrawals Raise Request </span> </p>
                </ng-container>
             </div>
          </div>
@@ -66,7 +70,8 @@
                   <p class="key"> No.Of Rejected Referrals : </p>
                   <p class="value"> {{referrals?.rejectedReferrals}} </p>
                </div>
-               <div class="box-action-bar">
+               <div class="box-action-bar m-top-20">
+                  <button mat-raised-button [routerLink]="['/referrals-list' ]"> View Detailed </button>
                   <button mat-raised-button (click)="copyLink()"> Copy Referral Link </button>
                </div>
             </div>
@@ -76,7 +81,7 @@
          <div class="card soon">
             <div class="card-title">
                <h2> Rebirth Ids </h2>
-               <p> Access Eligible on <span> {{after144Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+               <p> We will enable on this soon </p>
             </div>
          </div>
       </div>
@@ -84,15 +89,41 @@
          <div class="card soon">
             <div class="card-title">
                <h2> Growth Wallet </h2>
-               <p> Access Eligible on <span> {{after72Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+               <p> We will enable on this soon </p>
             </div>
          </div>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-         <div class="card soon">
+         <div class="card" [ngClass]="{'soon': withdrawal.Status === 'Locked'}">
             <div class="card-title">
-               <h2> Total Withdrawals </h2>
-               <p> Access Eligible on <span> {{after72Hours | date: 'd-MMM-y h:mm a'}} </span> </p>
+               <h2> Withdrawals </h2>
+               <ng-container *ngIf="withdrawal?.Status === 'Active'">
+                  <div class="key-value">
+                     <p class="key"> Status : </p>
+                     <p class="value"> {{withdrawal?.Status}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Available Amount :</p>
+                     <p class="value"> Rs. {{withdrawal?.AvailableAmount}} </p>
+                  </div>
+                  <div class="key-value">
+                     <p class="key"> Process Status : </p>
+                     <p class="value"> {{withdrawal?.ProcessStatus}} </p>
+                  </div>
+                  <div class="box-action-bar">
+                     <ng-container *ngIf="RequestInProgress">
+                        <button [disabled]="true" mat-raised-button> Requesting...</button>
+                     </ng-container>
+                     <ng-container *ngIf="!RequestInProgress">
+                        <button mat-raised-button (click)="RaiseGetHelpRequest()"> Raise Request </button>
+                     </ng-container>
+                  </div>
+               </ng-container>
+               <ng-container *ngIf="withdrawal?.Status === 'Locked'">
+                  <p *ngIf="getHelp.Status === 'Locked' && provideHelp.Status === 'Locked'"> Access Eligible on <span> {{getHelp.NextEligibleDate | date: 'd-MMM-y h:mm a'}} </span> </p>
+                  <p *ngIf="provideHelp.Status === 'Active'"> Access Eligible after completing the <span> Provide Help  </span> </p>
+                  <p *ngIf="getHelp.Status === 'Active'"> Access Eligible after completing the <span> Get Help </span> </p>
+               </ng-container>
             </div>
          </div>
       </div>

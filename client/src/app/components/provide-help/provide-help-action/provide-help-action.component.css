@@ -7,7 +7,12 @@
    border-radius: 10px;
    border: none;
 }
-
+.no-more-requests h3 {
+   text-align: center;
+   opacity: 0.5;
+   font-weight: 500;
+   margin: 50px 0px;
+}
 .provideHelp-Section .requestDetails .requestContent{
    padding: 10px;
 }

@@ -28,7 +28,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProvideHelpActionComponent } from './components/provide-help/provide-help-action/provide-help-action.component';
 import { GetHelpActionComponent } from './components/get-help/get-help-action/get-help-action.component';
-
+import { ReferralsListComponent } from './components/referrals/referrals-list/referrals-list.component';
 
 import { PaymentUpdateModelComponent } from './models/payment-update-model/payment-update-model.component';
 
@@ -41,7 +41,8 @@ import { PaymentUpdateModelComponent } from './models/payment-update-model/payme
     DashboardComponent,
     ProvideHelpActionComponent,
     PaymentUpdateModelComponent,
-    GetHelpActionComponent
+    GetHelpActionComponent,
+    ReferralsListComponent
   ],
   imports: [
     BrowserModule,

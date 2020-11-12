@@ -23,6 +23,7 @@ var CustomersManagementSchema = mongoose.Schema({
    provideCompletionDate: { type : Date },
    getHelpCompletionDate: { type : Date },
    lastLevelCompletionDate: { type : Date },
+   deActiveReason: { type : String },
    Active_Status: { type : Boolean },
    If_Deleted: { type : Boolean },
    },

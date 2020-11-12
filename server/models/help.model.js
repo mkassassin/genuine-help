@@ -30,7 +30,7 @@ var provideHelpManagementSchema = mongoose.Schema({
    requestedDate: { type: Date },
    PaymentDate: { type: Date },
    completedDate: { type: Date },
-   status: { type: String }, // Requested, RequestedAccepted, PaymentSent, PaymentVerified, PaymentReported
+   status: { type: String }, // Requested, RequestedAccepted, PaymentSent, PaymentVerified, PaymentReported, RequestedRejected
    remarks: { type: String },
    proof: { type: String }, // base64
    proofFile: { type: String },

@@ -160,3 +160,25 @@
       display: block;
     }
 }
+
+
+
+.so-icons {
+   position: fixed;
+   bottom: 10px;
+   right: 10px;
+   color: white;
+}
+.so-icons span {
+   margin: 8px;
+   font-size: 25px;
+   cursor: pointer;
+   background: #eaeaea;
+   border-radius: 25px;
+   width: 30px;
+   height: 30px;
+   display: inline-block;
+   text-align: center;
+   line-height: 30px;
+   color: #0e3616;
+}

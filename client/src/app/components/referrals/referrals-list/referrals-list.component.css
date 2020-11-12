@@ -1,0 +1,29 @@
+.ref-card{
+   box-shadow: 1px 1px 10px #c5c5c5;
+   margin-bottom: 20px;
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+}
+.ref-key-value{
+   display: grid;
+   grid-template-columns: auto auto;
+   justify-content: flex-start;
+   grid-gap: 10px;
+}
+.ref-key{
+   font-weight: 500;
+   color: #6c757d;
+}
+.ref-value{
+   font-weight: 500;
+   color: #2e8b57;
+}
+.ref-key-value.extraBold .ref-key{
+   font-weight: 800;
+   font-size: 16px;
+}
+.ref-key-value.extraBold .ref-value{
+   font-weight: 800;
+   font-size: 16px;
+}

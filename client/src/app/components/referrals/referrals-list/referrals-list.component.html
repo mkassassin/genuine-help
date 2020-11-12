@@ -1,0 +1,38 @@
+<section>
+   <div class="container-fluid">
+      <div class="ref-titile">
+         <h2>Referrals List</h2>
+      </div>
+      <div class="row">
+         <div *ngFor="let referral of referralsList; let i=index" class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+            <div class="ref-card">
+               <div class="ref-card-title"> <h2> {{referral?.name}} </h2> </div>
+               <div class="ref-key-value">
+                  <p class="ref-key"> ID : </p>
+                  <p class="ref-value"> {{referral?.uniqueCode}} </p>
+               </div>
+               <div class="ref-key-value">
+                  <p class="ref-key"> Level : </p>
+                  <p class="ref-value"> {{referral?.currentLevel}} </p>
+               </div>
+               <div class="ref-key-value">
+                  <p class="ref-key"> Mobile : </p>
+                  <p class="ref-value"> {{referral?.mobile}} </p>
+               </div>
+               <div class="ref-key-value">
+                  <p class="ref-key"> Active Referrals : </p>
+                  <p class="ref-value"> {{referral?.ActiveReferrals}} </p>
+               </div>
+               <div class="ref-key-value">
+                  <p class="ref-key"> Rejected Referrals : </p>
+                  <p class="ref-value"> {{referral?.RejectedReferrals}} </p>
+               </div>
+               <div class="ref-key-value extraBold">
+                  <p class="ref-key"> Status : </p>
+                  <p class="ref-value"> {{referral?.status}} </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>

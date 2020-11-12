@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
                if (response.Message === undefined || response.Message === '' || response.Message === null) {
                   response.Message = 'Some Error Occoured!, Please try again.';
                }
-               this.snackBar.open(response.Message, 'X', { panelClass: ['custom-snackBar', 'color-red'], duration: 5000, horizontalPosition: 'right', verticalPosition: 'top' });
+               this.snackBar.open(response.Message, 'X', { panelClass: ['custom-snackBar', 'color-red'], duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
             }
          });
       } else {
