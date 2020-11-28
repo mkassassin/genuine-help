@@ -16,27 +16,27 @@ export class CustomersService {
    constructor(private http: HttpClient, private router: Router) { }
 
    customerReference_AsyncValidate(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'customerReference_AsyncValidate', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'customerReference_AsyncValidate', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    customerEmail_AsyncValidate(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'customerEmail_AsyncValidate', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'customerEmail_AsyncValidate', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    customer_registration(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'customer_registration', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'customer_registration', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    customer_login(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'customer_login', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'customer_login', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    customerDetails(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'customerDetails', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'customerDetails', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    referralsList(data: any): Observable<any> {
-      return this.http.post<any>(StageURL + 'referralsList', data).pipe(map(res => res), catchError(err => of(err)));
+      return this.http.post<any>(DevURL + 'referralsList', data).pipe(map(res => res), catchError(err => of(err)));
    }
 
    ifLoggedIn() {

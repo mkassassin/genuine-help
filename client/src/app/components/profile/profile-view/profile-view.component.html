@@ -1,0 +1,60 @@
+<section>
+   <div class="container-fluid">
+      <div class="profile-titile">
+         <h2> Profile View </h2>
+      </div>
+      <div class="profile-card">
+         <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+               <div class="profile-key-value">
+                  <p class="profile-key"> ID : </p>
+                  <p class="profile-value"> {{CustomerInfo?.uniqueCode}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Current Level : </p>
+                  <p class="profile-value"> {{CustomerInfo?.currentLevel}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Name : </p>
+                  <p class="profile-value"> {{CustomerInfo?.name}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Email : </p>
+                  <p class="profile-value"> {{CustomerInfo?.email}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Mobile : </p>
+                  <p class="profile-value"> {{CustomerInfo?.mobile}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> WhatsApp : </p>
+                  <p class="profile-value"> {{CustomerInfo?.whatsApp}} </p>
+               </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+               <div class="profile-key-value">
+                  <p class="profile-key"> Bank Account Number : </p>
+                  <p class="profile-value"> {{CustomerInfo?.accNum}}  </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Account Branch : </p>
+                  <p class="profile-value"> {{CustomerInfo?.branch}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> Branch IFSC Code : </p>
+                  <p class="profile-value"> {{CustomerInfo?.ifscCode}} </p>
+               </div>
+               <div class="profile-key-value">
+                  <p class="profile-key"> UPI or Mobile in G-Pay, PhonePe etc... : </p>
+                  <p class="profile-value"> {{CustomerInfo?.UPIid}} </p>
+               </div>
+            </div>
+            <div class="col-sm-12">
+               <div class="profile-action">
+                  <button mat-raised-button color="primary"> Edit Profile </button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>

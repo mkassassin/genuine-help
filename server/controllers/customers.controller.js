@@ -186,9 +186,9 @@ exports.customer_login = function (req, res) {
                         activeReferrals = activeReferrals + 1;
                      }
                   });
-                  var after96Hrs = (result.provideCompletionDate !== null && result.currentLevel === 'Level_1') ? new Date(new Date(result.provideCompletionDate).setHours(new Date(result.provideCompletionDate).getHours() + 96)) : new Date();
-                  if (result.currentLevel === 'Level_1' && result.getHelpStatus === 'Pending' && result.provideHelpStatus === 'Completed' && after96Hrs.valueOf() <= new Date().valueOf() && activeReferrals < 3) {
-                     customersModel.CustomersManagementSchema.updateOne({_id: result._id}, { $set: {Active_Status: false, If_Deleted: true, deActiveReason: 'You are not completing the 3 active referrals within 4Days, so your account has blocked.' }}).exec();
+                  var after168Hrs = (result.provideCompletionDate !== null && result.currentLevel === 'Level_1') ? new Date(new Date(result.provideCompletionDate).setHours(new Date(result.provideCompletionDate).getHours() + 168)) : new Date();
+                  if (result.currentLevel === 'Level_1' && result.getHelpStatus === 'Pending' && result.provideHelpStatus === 'Completed' && after168Hrs.valueOf() <= new Date().valueOf() && (activeReferrals < 3 && referrals.length < 3)) {
+                     customersModel.CustomersManagementSchema.updateOne({_id: result._id}, { $set: {Active_Status: false, If_Deleted: true, deActiveReason: 'You are not completing the 3 active referrals within 7Days, so your account has blocked.' }}).exec();
                      res.status(200).send({ Status: false, Message: "You are not completing the 3 active referrals within 4Days, so your account has blocked." });
                   } else {
                      var RandomToken = crypto.randomBytes(32).toString("hex");

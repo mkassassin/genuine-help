@@ -11,6 +11,7 @@ import { ProvideHelpActionComponent } from './components/provide-help/provide-he
 import { GetHelpActionComponent } from './components/get-help/get-help-action/get-help-action.component';
 import { ReferralsListComponent } from './components/referrals/referrals-list/referrals-list.component';
 
+import { ProfileViewComponent } from './components/profile/profile-view/profile-view.component';
 
 const routes: Routes = [
    {
@@ -52,6 +53,12 @@ const routes: Routes = [
    {
       path: 'referrals-list',
       component: ReferralsListComponent,
+      canActivate: [AuthGuard],
+      data: {}
+   },
+   {
+      path: 'profile-view',
+      component: ProfileViewComponent,
       canActivate: [AuthGuard],
       data: {}
    }

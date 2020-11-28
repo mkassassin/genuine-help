@@ -1,0 +1,33 @@
+.profile-card {
+   box-shadow: 1px 1px 10px #c5c5c5;
+   margin-bottom: 20px;
+   padding: 10px;
+   border-radius: 10px;
+   border: none;
+}
+.profile-key-value{
+   display: grid;
+   grid-template-columns: auto auto;
+   justify-content: flex-start;
+   grid-gap: 10px;
+}
+.profile-key{
+   font-weight: 500;
+   color: #6c757d;
+}
+.profile-value{
+   font-weight: 500;
+   color: #2e8b57;
+}
+.profile-key-value.extraBold .profile-key{
+   font-weight: 800;
+   font-size: 16px;
+}
+.profile-key-value.extraBold .profile-value{
+   font-weight: 800;
+   font-size: 16px;
+}
+.profile-action{
+   display: grid;
+   justify-content: right;
+}

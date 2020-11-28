@@ -29,6 +29,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProvideHelpActionComponent } from './components/provide-help/provide-help-action/provide-help-action.component';
 import { GetHelpActionComponent } from './components/get-help/get-help-action/get-help-action.component';
 import { ReferralsListComponent } from './components/referrals/referrals-list/referrals-list.component';
+import { ProfileViewComponent } from './components/profile/profile-view/profile-view.component';
 
 import { PaymentUpdateModelComponent } from './models/payment-update-model/payment-update-model.component';
 
@@ -42,7 +43,8 @@ import { PaymentUpdateModelComponent } from './models/payment-update-model/payme
     ProvideHelpActionComponent,
     PaymentUpdateModelComponent,
     GetHelpActionComponent,
-    ReferralsListComponent
+    ReferralsListComponent,
+    ProfileViewComponent
   ],
   imports: [
     BrowserModule,

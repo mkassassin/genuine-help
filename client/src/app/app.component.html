@@ -21,7 +21,7 @@
             </span>
          </span>
          <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item [routerLink]="['/dashboard']"> <mat-icon>account_box</mat-icon> Profile</button>
+            <button mat-menu-item [routerLink]="['/profile-view']"> <mat-icon>account_box</mat-icon> Profile</button>
             <button mat-menu-item (click)="logOut()"> <mat-icon>exit_to_app</mat-icon> LogOut</button>
          </mat-menu>
       </div>
@@ -34,7 +34,7 @@
                   <a [routerLink]="['/dashboard']"> <mat-icon>dashboard</mat-icon> Dashboard </a>
                </li>
                <li routerLinkActive="link-active">
-                  <a [routerLink]="['/profile']"> <mat-icon>account_box</mat-icon> Profile </a>
+                  <a [routerLink]="['/profile-view']"> <mat-icon>account_box</mat-icon> Profile </a>
                </li>
                <li routerLinkActive="link-active">
                   <a [routerLink]="['/profile']"> <mat-icon>source</mat-icon> E-Pin </a>
